@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇬🇧 英国芭蕾考级 · 自动术语练习</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            min-height: 100vh;
+            background: linear-gradient(145deg, #fdf6f0 0%, #f0e6df 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+        }
+        .card {
+            max-width: 680px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(12px);
+            border-radius: 48px;
+            padding: 2.2rem 2rem 2.8rem;
+            box-shadow: 0 25px 50px -10px rgba(80, 50, 40, 0.25);
+            border: 1px solid rgba(255, 245, 240, 0.6);
+            transition: all 0.2s ease;
+        }
+        h1 {
+            font-weight: 400;
+            font-size: 1.6rem;
+            letter-spacing: 0.5px;
+            color: #3b2a24;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 0.2rem;
+        }
+        h1 small {
+            font-size: 0.9rem;
+            font-weight: 300;
+            color: #7a5f55;
+            margin-left: auto;
+            background: rgba(190, 160, 145, 0.2);
+            padding: 0.2rem 1rem;
+            border-radius: 40px;
+        }
+        .subhead {
+            color: #7a5f55;
+            font-weight: 300;
+            font-size: 0.95rem;
+            border-left: 3px solid #d4b8ab;
+            padding-left: 1rem;
+            margin-bottom: 2rem;
+        }
+        .term-pool {
+            background: rgba(245, 235, 230, 0.5);
+            border-radius: 60px;
+            padding: 0.2rem 0.2rem 0.2rem 1.8rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.4rem 0.8rem;
+            margin-bottom: 2.2rem;
+            border: 1px solid rgba(200, 175, 160, 0.2);
+        }
+        .term-pool span {
+            font-size: 0.85rem;
+            color: #5a4036;
+            font-weight: 300;
+        }
+        .term-pool .badge {
+            background: #dccbc2;
+            color: #3b2a24;
+            padding: 0.25rem 1rem;
+            border-radius: 40px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+        .display-area {
+            background: #fcf8f5;
+            border-radius: 40px;
+            padding: 3.2rem 1rem;
+            text-align: center;
+            margin-bottom: 2.2rem;
+            box-shadow: inset 0 4px 12px rgba(120, 80, 65, 0.06);
+            border: 1px solid rgba(230, 210, 200, 0.4);
+            min-height: 150px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+        .display-area:hover {
+            background: #faf5f1;
+        }
+        .term-word {
+            font-size: 4rem;
+            font-weight: 400;
+            color: #2c1d17;
+            letter-spacing: 1px;
+            line-height: 1.3;
+            word-break: break-word;
+        }
+        .term-word .phonetic {
+            font-size: 1.1rem;
+            font-weight: 300;
+            color: #8f7367;
+            display: block;
+            margin-top: 0.2rem;
+            letter-spacing: 1px;
+        }
+        .status-tip {
+            font-size: 0.9rem;
+            color: #a9887a;
+            margin-top: 0.6rem;
+            font-weight: 300;
+            min-height: 1.6rem;
+        }
+        .control-bar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin: 1.5rem 0 2rem;
+        }
+        .btn {
+            border: none;
+            background: #f0e3dc;
+            padding: 0.75rem 1.8rem;
+            border-radius: 60px;
+            font-size: 1rem;
+            font-weight: 500;
+            color: #3b2a24;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.6rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            flex: 1 1 auto;
+            justify-content: center;
+            border: 1px solid transparent;
+        }
+        .btn-primary {
+            background: #5e3f33;
+            color: white;
+            box-shadow: 0 8px 18px -8px rgba(80, 50, 40, 0.3);
+        }
+        .btn-primary:hover {
+            background: #4d3228;
+            transform: scale(0.98);
+        }
+        .btn-primary:active {
+            transform: scale(0.94);
+        }
+        .btn-success {
+            background: #2d6a4f;
+            color: white;
+            box-shadow: 0 8px 18px -8px rgba(45, 106, 79, 0.3);
+        }
+        .btn-success:hover {
+            background: #1e4d3a;
+            transform: scale(0.98);
+        }
+        .btn-danger {
+            background: #9e5a4a;
+            color: white;
+            box-shadow: 0 8px 18px -8px rgba(158, 90, 74, 0.3);
+        }
+        .btn-danger:hover {
+            background: #7d4538;
+            transform: scale(0.98);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid #cbb6ab;
+            color: #4f3a30;
+        }
+        .btn-outline:hover {
+            background: rgba(190, 160, 145, 0.1);
+        }
+        .btn:disabled {
+            opacity: 0.4;
+            pointer-events: none;
+            filter: grayscale(0.2);
+        }
+        .btn-icon {
+            font-size: 1.2rem;
+            line-height: 1;
+        }
+        .input-group {
+            display: flex;
+            gap: 0.6rem;
+            margin: 1.8rem 0 0.8rem;
+            flex-wrap: wrap;
+        }
+        .input-group input {
+            flex: 3 1 200px;
+            padding: 0.8rem 1.4rem;
+            border-radius: 60px;
+            border: 1px solid #dccbc2;
+            background: rgba(255, 248, 245, 0.6);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.2s;
+            font-family: inherit;
+        }
+        .input-group input:focus {
+            border-color: #a98474;
+            box-shadow: 0 0 0 4px rgba(160, 120, 105, 0.08);
+        }
+        .input-group .btn {
+            flex: 1 0 auto;
+        }
+        .footer-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+            margin-top: 1rem;
+            padding-top: 1.4rem;
+            border-top: 1px solid rgba(200, 175, 160, 0.3);
+        }
+        .counter {
+            font-size: 0.85rem;
+            color: #7a5f55;
+            font-weight: 300;
+        }
+        .speed-control {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem 1rem;
+            flex-wrap: wrap;
+        }
+        .speed-control label {
+            font-size: 0.8rem;
+            color: #5a4036;
+            font-weight: 300;
+        }
+        .speed-control input[type="range"] {
+            width: 90px;
+            accent-color: #7a5f55;
+        }
+        .speed-control span {
+            font-size: 0.85rem;
+            color: #3b2a24;
+            min-width: 2.2rem;
+        }
+        .auto-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 4px;
+            transition: background 0.3s ease;
+        }
+        .auto-indicator.running {
+            background: #2d6a4f;
+            box-shadow: 0 0 8px rgba(45, 106, 79, 0.5);
+        }
+        .auto-indicator.stopped {
+            background: #9e5a4a;
+            box-shadow: 0 0 8px rgba(158, 90, 74, 0.3);
+        }
+        @media (max-width: 480px) {
+            .card {
+                padding: 1.5rem 1rem;
+            }
+            .term-word {
+                font-size: 2.8rem;
+            }
+            .display-area {
+                padding: 2rem 0.8rem;
+                min-height: 120px;
+            }
+            .btn {
+                padding: 0.6rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            .control-bar {
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card" role="main">
+        <h1>
+            🩰 英皇术语 🌸 元头必胜 🩰
+            <small>RAD</small>
+        </h1>
+        <div class="subhead">自动节奏抽取 · 法语发音</div>
+
+        <!-- 当前词库状态 -->
+        <div class="term-pool">
+            <span>📚 词库</span>
+            <span class="badge" id="termCountDisplay">0</span>
+            <span style="margin-left:auto; display:flex; align-items:center; gap:4px;">
+                <span class="auto-indicator stopped" id="autoIndicator"></span>
+                <span id="autoStatusText" style="font-size:0.8rem; color:#7a5f55;">已暂停</span>
+            </span>
+        </div>
+
+        <!-- 大卡片显示当前术语 -->
+        <div class="display-area" id="displayArea">
+            <div class="term-word" id="termDisplay">
+                <span style="font-size:1.6rem; font-weight:200; color:#bcaa9f;">准备开始</span>
+                <span class="phonetic"></span>
+            </div>
+            <div class="status-tip" id="statusTip">点击「开始自动」或双击此区域</div>
+        </div>
+
+        <!-- 主控制按钮 -->
+        <div class="control-bar">
+            <button class="btn btn-success" id="autoToggleBtn">
+                <span class="btn-icon">▶️</span> <span id="autoToggleLabel">开始自动</span>
+            </button>
+            <button class="btn btn-primary" id="drawBtn">
+                <span class="btn-icon">🎲</span> 手动抽取
+            </button>
+            <button class="btn btn-outline" id="speakBtn">
+                <span class="btn-icon">🔊</span> 再读一次
+            </button>
+            <button class="btn btn-outline" id="resetBtn">
+                <span class="btn-icon">⟳</span> 重置
+            </button>
+        </div>
+
+        <!-- 添加新术语 -->
+        <div class="input-group">
+            <input type="text" id="newTermInput" placeholder="输入法语术语，如: arabesque" />
+            <button class="btn btn-outline" id="addTermBtn">➕ 添加</button>
+        </div>
+
+        <!-- 底部：节奏控制 + 计数 -->
+        <div class="footer-actions">
+            <div class="counter" id="counterDisplay">已抽取 <strong id="drawCount">0</strong> 次</div>
+            <div class="speed-control">
+                <label for="intervalRange">⏱ 节奏</label>
+                <input type="range" id="intervalRange" min="1" max="10" step="0.5" value="10" />
+                <span id="intervalLabel">2.2s</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            "use strict";
+
+            // ---------- 默认词库 ----------
+            const DEFAULT_TERMS = [
+                "Jetés ordinaire devant", 
+		"Jetés ordinaire derrière", 
+
+		"Assemblés devant",
+		"Assemblés derrière",
+		"Assemblés. over",
+		"Assemblés. under",
+		"Assemblés. over",
+		"Assemblés. under",
+		
+                "Sissonnes fermées de côte devant", 
+                "Sissonnes fermées de côte derrière", 
+                "Sissonnes fermées de côte. over", 
+                "Sissonnes fermées de côte. under", 
+                "Sissonnes fermées de côte. over", 
+                "Sissonnes fermées de côte. under", 
+
+		"Pas de bourrées devant",
+		"Pas de bourrées derrière",
+		"Pas de bourrées. over",
+		"Pas de bourrées. under",
+		"Pas de bourrées. over",
+		"Pas de bourrées. under",
+
+		"Changement",
+		"Changement battu",
+
+		"Relevé in 5th position",
+		
+		"Glissades devant",
+		"Glissades derrière",
+		"Glissades. over",
+		"Glissades. under",
+		"Glissades. over",
+		"Glissades. under",
+		
+                "Temps levé", 
+
+                "Petits assemblés devant", 
+		"Petits assemblés derrière", 		
+
+		"Coupé chassé pas de bourrée"
+            ];
+
+            // DOM 引用
+            const termDisplay = document.getElementById('termDisplay');
+            const statusTip = document.getElementById('statusTip');
+            const drawBtn = document.getElementById('drawBtn');
+            const speakBtn = document.getElementById('speakBtn');
+            const resetBtn = document.getElementById('resetBtn');
+            const addTermBtn = document.getElementById('addTermBtn');
+            const newTermInput = document.getElementById('newTermInput');
+            const intervalRange = document.getElementById('intervalRange');
+            const intervalLabel = document.getElementById('intervalLabel');
+            const termCountDisplay = document.getElementById('termCountDisplay');
+            const drawCountSpan = document.getElementById('drawCount');
+            const autoToggleBtn = document.getElementById('autoToggleBtn');
+            const autoToggleLabel = document.getElementById('autoToggleLabel');
+            const autoIndicator = document.getElementById('autoIndicator');
+            const autoStatusText = document.getElementById('autoStatusText');
+            const displayArea = document.getElementById('displayArea');
+
+            // 状态
+            let termList = [];
+            let currentTerm = '';
+            let drawCounter = 0;
+            let timerId = null;
+            let isAutoRunning = false;
+            let isSpeaking = false;
+            let currentUtterance = null;
+
+            // ---------- 辅助函数 ----------
+            function updateTermCount() {
+                termCountDisplay.textContent = termList.length;
+            }
+
+            function updateDrawCount() {
+                drawCountSpan.textContent = drawCounter;
+            }
+
+            function updateAutoUI() {
+                if (isAutoRunning) {
+                    autoToggleLabel.textContent = '暂停';
+                    autoToggleBtn.innerHTML = '<span class="btn-icon">⏸️</span> 暂停';
+                    autoToggleBtn.className = 'btn btn-danger';
+                    autoIndicator.className = 'auto-indicator running';
+                    autoStatusText.textContent = '播放中';
+                } else {
+                    autoToggleLabel.textContent = '开始自动';
+                    autoToggleBtn.innerHTML = '<span class="btn-icon">▶️</span> 开始自动';
+                    autoToggleBtn.className = 'btn btn-success';
+                    autoIndicator.className = 'auto-indicator stopped';
+                    autoStatusText.textContent = '已暂停';
+                }
+            }
+
+            function displayTerm(term) {
+                if (!term) {
+                    termDisplay.innerHTML = `
+                        <span style="font-size:1.6rem; font-weight:200; color:#bcaa9f;">暂无术语</span>
+                        <span class="phonetic"></span>
+                    `;
+                    currentTerm = '';
+                    return;
+                }
+                const clean = term.trim();
+                currentTerm = clean;
+                termDisplay.innerHTML = `
+                    ${clean}
+                    <span class="phonetic"></span>
+                `;
+            }
+
+            // 法语 TTS
+            function speakFrench(text) {
+                if (!text) return;
+                if (!window.speechSynthesis) {
+                    statusTip.textContent = '⚠️ 您的浏览器不支持语音朗读';
+                    return;
+                }
+
+                if (window.speechSynthesis.speaking) {
+                    window.speechSynthesis.cancel();
+                }
+
+                const utterance = new SpeechSynthesisUtterance(text);
+                utterance.lang = 'fr-FR';
+                utterance.rate = 0.85;
+                utterance.pitch = 1.0;
+                utterance.volume = 1;
+
+                const voices = window.speechSynthesis.getVoices();
+                const frVoice = voices.find(v => v.lang.startsWith('fr'));
+                if (frVoice) utterance.voice = frVoice;
+
+                utterance.onstart = function() {
+                    isSpeaking = true;
+                };
+                utterance.onend = function() {
+                    isSpeaking = false;
+                    currentUtterance = null;
+                };
+                utterance.onerror = function(e) {
+                    isSpeaking = false;
+                    currentUtterance = null;
+                };
+
+                currentUtterance = utterance;
+                window.speechSynthesis.speak(utterance);
+            }
+
+            function pickRandomTerm() {
+                if (!termList || termList.length === 0) {
+                    return null;
+                }
+                const randomIndex = Math.floor(Math.random() * termList.length);
+                return termList[randomIndex];
+            }
+
+            // 核心抽取动作
+            function performDraw() {
+                if (termList.length === 0) {
+                    displayTerm(null);
+                    statusTip.textContent = '📭 词库为空，请添加术语';
+                    return;
+                }
+
+                const term = pickRandomTerm();
+                if (!term) return;
+
+                displayTerm(term);
+                drawCounter++;
+                updateDrawCount();
+                statusTip.textContent = `🎯 第 ${drawCounter} 次抽取`;
+
+                speakFrench(term);
+            }
+
+            // 启动自动播放
+            function startAuto() {
+                if (termList.length === 0) {
+                    statusTip.textContent = '📭 词库为空，无法自动播放';
+                    return;
+                }
+                if (timerId) {
+                    clearInterval(timerId);
+                    timerId = null;
+                }
+                isAutoRunning = true;
+                updateAutoUI();
+
+                const intervalSec = parseFloat(intervalRange.value) || 2.2;
+                timerId = setInterval(function() {
+                    performDraw();
+                }, intervalSec * 1000);
+
+                statusTip.textContent = `▶️ 自动播放已启动 (间隔 ${intervalSec}s)`;
+                // 立即抽取一次
+                performDraw();
+            }
+
+            // 暂停自动播放
+            function pauseAuto() {
+                if (timerId) {
+                    clearInterval(timerId);
+                    timerId = null;
+                }
+                isAutoRunning = false;
+                updateAutoUI();
+                statusTip.textContent = '⏸️ 已暂停自动播放';
+            }
+
+            // 切换 开始/暂停
+            function toggleAuto() {
+                if (isAutoRunning) {
+                    pauseAuto();
+                } else {
+                    startAuto();
+                }
+            }
+
+            // 重置全部
+            function resetAll() {
+                pauseAuto();
+                if (window.speechSynthesis.speaking) {
+                    window.speechSynthesis.cancel();
+                }
+                termList = [...DEFAULT_TERMS];
+                updateTermCount();
+                drawCounter = 0;
+                updateDrawCount();
+                if (termList.length > 0) {
+                    displayTerm(termList[0]);
+                    statusTip.textContent = '📖 已恢复默认词库';
+                } else {
+                    displayTerm(null);
+                    statusTip.textContent = '📭 词库为空';
+                }
+            }
+
+            function addTerm() {
+                const raw = newTermInput.value.trim();
+                if (!raw) {
+                    statusTip.textContent = '⚠️ 请输入术语';
+                    return;
+                }
+                const exists = termList.some(t => t.toLowerCase() === raw.toLowerCase());
+                if (exists) {
+                    statusTip.textContent = `⏳ “${raw}” 已存在`;
+                    newTermInput.value = '';
+                    return;
+                }
+                termList.push(raw);
+                updateTermCount();
+                newTermInput.value = '';
+                statusTip.textContent = `✅ 已添加: ${raw}`;
+                if (!currentTerm && termList.length > 0) {
+                    displayTerm(termList[0]);
+                }
+            }
+
+            // ---------- 绑定事件 ----------
+            function initEvents() {
+                // 开始/暂停 按钮
+                autoToggleBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    toggleAuto();
+                });
+
+                // 手动抽取
+                drawBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    performDraw();
+                });
+
+                // 再读一次
+                speakBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    if (currentTerm) {
+                        speakFrench(currentTerm);
+                        statusTip.textContent = `🔊 重新朗读: ${currentTerm}`;
+                    } else {
+                        statusTip.textContent = '⚠️ 没有可朗读的术语';
+                    }
+                });
+
+                // 重置
+                resetBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    resetAll();
+                });
+
+                // 添加术语
+                addTermBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    addTerm();
+                });
+
+                newTermInput.addEventListener('keydown', function(e) {
+                    if (e.key === 'Enter') {
+                        e.preventDefault();
+                        addTerm();
+                    }
+                });
+
+                // 节奏滑块
+                intervalRange.addEventListener('input', function() {
+                    const val = parseFloat(this.value).toFixed(1);
+                    intervalLabel.textContent = val + 's';
+                    // 如果正在运行，重启定时器以应用新间隔
+                    if (isAutoRunning) {
+                        startAuto(); // restart
+                    }
+                });
+
+                // 双击显示区域切换 开始/暂停
+                displayArea.addEventListener('dblclick', function(e) {
+                    e.preventDefault();
+                    toggleAuto();
+                });
+
+                // 键盘快捷键: 空格键手动抽取，R键重置
+                document.addEventListener('keydown', function(e) {
+                    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+                    if (e.key === ' ' || e.key === 'Space') {
+                        e.preventDefault();
+                        performDraw();
+                    }
+                    if (e.key === 'r' || e.key === 'R') {
+                        e.preventDefault();
+                        resetAll();
+                    }
+                    if (e.key === 'Enter' && !e.target.closest('.input-group')) {
+                        // 回车切换自动
+                        e.preventDefault();
+                        toggleAuto();
+                    }
+                });
+
+                // 语音API预热
+                if (window.speechSynthesis) {
+                    window.speechSynthesis.getVoices();
+                    window.speechSynthesis.onvoiceschanged = function() {
+                        window.speechSynthesis.getVoices();
+                    };
+                }
+            }
+
+            // ---------- 初始化 ----------
+            function init() {
+                termList = [...DEFAULT_TERMS];
+                updateTermCount();
+                drawCounter = 0;
+                updateDrawCount();
+                if (termList.length > 0) {
+                    displayTerm(termList[0]);
+                    statusTip.textContent = '✨ 点击「开始自动」或双击卡片启动';
+                } else {
+                    displayTerm(null);
+                    statusTip.textContent = '📭 默认词库为空';
+                }
+                intervalLabel.textContent = parseFloat(intervalRange.value).toFixed(1) + 's';
+                updateAutoUI();
+                initEvents();
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+        })();
+    </script>
+</body>
+</html>
